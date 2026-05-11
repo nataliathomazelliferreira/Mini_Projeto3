@@ -30,7 +30,7 @@ def create_app():
 
     @app.get("/")
     def get_home():
-        return {"message": "Welcome to Word of the Day"}
+        return {"Welcome to Word of the Day"}
 
     @app.get("/status")
     def get_status():
