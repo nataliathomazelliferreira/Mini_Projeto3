@@ -1,7 +1,8 @@
+from random import choice
 from fastapi import FastAPI, HTTPException
 
 def create_app():
-    app = FastAPI(title="Word of the Day API")
+    app = FastAPI(title="Word of the Day")
 
     words = [
         {
@@ -27,6 +28,10 @@ def create_app():
         }
     ]
 
+    @app.get("/")
+    def get_home():
+        return {"message": "Welcome to Word of the Day"}
+
     @app.get("/status")
     def get_status():
         return {"status": "online"}
@@ -34,6 +39,10 @@ def create_app():
     @app.get("/words")
     def get_words():
         return words
+
+    @app.get("/words/random")
+    def get_random_word():
+        return choice(words)
 
     @app.get("/words/{word_id}")
     def get_word_by_id(word_id: int):
