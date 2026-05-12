@@ -1,8 +1,9 @@
 from random import choice
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 
 def create_app():
-    app = FastAPI(title="Word of the Day")
+    app = FastAPI(title="Word of the Day API")
 
     words = [
         {
@@ -30,7 +31,7 @@ def create_app():
 
     @app.get("/")
     def get_home():
-        return {"Welcome to Word of the Day"}
+        return {"message": "Welcome to Word of the Day"}
 
     @app.get("/status")
     def get_status():
@@ -50,7 +51,80 @@ def create_app():
             if word["id"] == word_id:
                 return word
 
-        raise HTTPException(status_code=404, detail="Palavra não encontrada")
+        raise HTTPException(
+            status_code=404,
+            detail="Word not found"
+        )
+
+    @app.get("/web", response_class=HTMLResponse)
+    def get_web_page():
+        word = choice(words)
+
+        return f"""
+        <html>
+            <head>
+                <title>Word of the Day</title>
+
+                <style>
+                    body {{
+                        background-color: #f4f4f4;
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                    }}
+
+                    .card {{
+                        background-color: white;
+                        padding: 40px;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                        width: 500px;
+                    }}
+
+                    h1 {{
+                        color: #333333;
+                        margin-bottom: 20px;
+                    }}
+
+                    h2 {{
+                        color: #4a90e2;
+                        margin-bottom: 20px;
+                    }}
+
+                    p {{
+                        color: #555555;
+                        font-size: 18px;
+                    }}
+                </style>
+            </head>
+
+            <body>
+                <div class="card">
+                    <h1>Word of the Day</h1>
+
+                    <h2>{word["word"]}</h2>
+
+                    <p>
+                        <strong>Translation:</strong>
+                        {word["translation"]}
+                    </p>
+
+                    <p>
+                        <strong>Example:</strong>
+                        {word["example"]}
+                    </p>
+
+                    <p>
+                        <strong>Level:</strong>
+                        {word["level"]}
+                    </p>
+                </div>
+            </body>
+        </html>
+        """
 
     return app
 
