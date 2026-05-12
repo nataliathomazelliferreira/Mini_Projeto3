@@ -1,33 +1,10 @@
 from random import choice
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
+from server.app.data import words
 
 def create_app():
     app = FastAPI(title="Word of the Day API")
-
-    words = [
-        {
-            "id": 1,
-            "word": "improve",
-            "translation": "melhorar",
-            "example": "I want to improve my English.",
-            "level": "basic"
-        },
-        {
-            "id": 2,
-            "word": "challenge",
-            "translation": "desafio",
-            "example": "Learning a new language is a challenge.",
-            "level": "intermediate"
-        },
-        {
-            "id": 3,
-            "word": "achieve",
-            "translation": "alcançar",
-            "example": "You can achieve your goals with practice.",
-            "level": "intermediate"
-        }
-    ]
 
     @app.get("/")
     def get_home():
@@ -104,23 +81,10 @@ def create_app():
             <body>
                 <div class="card">
                     <h1>Word of the Day</h1>
-
                     <h2>{word["word"]}</h2>
-
-                    <p>
-                        <strong>Translation:</strong>
-                        {word["translation"]}
-                    </p>
-
-                    <p>
-                        <strong>Example:</strong>
-                        {word["example"]}
-                    </p>
-
-                    <p>
-                        <strong>Level:</strong>
-                        {word["level"]}
-                    </p>
+                    <p><strong>Translation:</strong> {word["translation"]}</p>
+                    <p><strong>Example:</strong> {word["example"]}</p>
+                    <p><strong>Level:</strong> {word["level"]}</p>
                 </div>
             </body>
         </html>
