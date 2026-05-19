@@ -314,6 +314,15 @@ python -m uvicorn server.app.main:app --reload
 * Endpoint para buscar palavra por ID
 * Organização em pastas separando servidor, cliente e dados
 
+## Melhorias futuras
+
+- Criar uma interface web mais completa
+- Adicionar um número maior de palavras
+- Permitir cadastro de novas palavras pela API
+- Adicionar filtro por nível de dificuldade
+- Salvar os dados em um banco de dados
+- Melhorar o design da página inicial
+
 ## Sobre o consumo de API
 
 O consumo da API acontece no arquivo:
