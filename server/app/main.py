@@ -6,35 +6,8 @@ from server.app.data import words
 def create_app():
     app = FastAPI(title="Word of the Day API")
 
-    @app.get("/")
+    @app.get("/", response_class=HTMLResponse)
     def get_home():
-        return {"message": "Welcome to Word of the Day"}
-
-    @app.get("/status")
-    def get_status():
-        return {"status": "online"}
-
-    @app.get("/words")
-    def get_words():
-        return words
-
-    @app.get("/words/random")
-    def get_random_word():
-        return choice(words)
-
-    @app.get("/words/{word_id}")
-    def get_word_by_id(word_id: int):
-        for word in words:
-            if word["id"] == word_id:
-                return word
-
-        raise HTTPException(
-            status_code=404,
-            detail="Word not found"
-        )
-
-    @app.get("/web", response_class=HTMLResponse)
-    def get_web_page():
         word = choice(words)
 
         return f"""
@@ -81,14 +54,50 @@ def create_app():
             <body>
                 <div class="card">
                     <h1>Word of the Day</h1>
+
                     <h2>{word["word"]}</h2>
-                    <p><strong>Translation:</strong> {word["translation"]}</p>
-                    <p><strong>Example:</strong> {word["example"]}</p>
-                    <p><strong>Level:</strong> {word["level"]}</p>
+
+                    <p>
+                        <strong>Translation:</strong>
+                        {word["translation"]}
+                    </p>
+
+                    <p>
+                        <strong>Example:</strong>
+                        {word["example"]}
+                    </p>
+
+                    <p>
+                        <strong>Level:</strong>
+                        {word["level"]}
+                    </p>
                 </div>
             </body>
         </html>
         """
+
+    @app.get("/status")
+    def get_status():
+        return {"status": "online"}
+
+    @app.get("/words")
+    def get_words():
+        return words
+
+    @app.get("/words/random")
+    def get_random_word():
+        return choice(words)
+
+    @app.get("/words/{word_id}")
+    def get_word_by_id(word_id: int):
+        for word in words:
+            if word["id"] == word_id:
+                return word
+
+        raise HTTPException(
+            status_code=404,
+            detail="Word not found"
+        )
 
     return app
 
